@@ -1,0 +1,157 @@
+<HTML>
+<HEAD>
+<SCRIPT>
+DRAW = 0;
+DRAW_TYPE = 0;
+X = -1;
+Y = -1;
+XD = -1;
+YD = -1;
+
+function canv_init()
+{
+d = document.getElementById("canv");
+A = d.getContext("2d");
+d2 = document.getElementById("canv2");
+A2 = d2.getContext("2d");
+d3 = document.getElementById("canv3");
+A3 = d3.getContext("2d");
+W = d.width;
+H = d.height;
+
+A.clearRect(0,0,W,H);
+
+A2.clearRect(0,0,W,H);
+
+A3.clearRect(0,0,W,H);
+A2.strokeRect(0,0,W,H);
+
+}
+
+function md(e)
+{
+DRAW = 1;
+XD = e.offsetX;
+YD = e.offsetY;
+
+A2.lineWidth = "1";
+A3.clearRect(0,0,W,H);
+
+switch (DRAW_TYPE)
+{
+    case 66:
+    {
+        A2.beginPath();
+        A2.moveTo(XD,YD);    }
+}
+}
+
+
+function mu(e)
+{
+    if(DRAW == 1)
+    {
+        switch (DRAW_TYPE)
+        {
+            case 77: {
+                A2.strokeRect(XD,YD,MAXX(X-XD,Y-YD),MAXY(X-XD,Y-YD));
+                A.clearRect(0,0,W,H);
+                break;}
+            
+        }
+    }
+    
+DRAW = 0;
+
+}
+
+function mm(e)
+{
+    X = e.offsetX;
+    Y = e.offsetY;
+    
+if(DRAW == 1)
+{
+    switch (DRAW_TYPE)
+    {
+        case 77: draw_square(e); break;
+        case 66: brush(e);break;
+    }
+}
+cursor(e);
+}
+
+function cursor(e)
+{
+
+
+    switch (DRAW_TYPE)
+    {
+        case 66: {
+            A3.clearRect(0,0,W,H);
+            A3.fillRect(X-3,Y-3,6,6);
+            break;}
+        case 77:
+        {
+            A3.clearRect(0,0,W,H);
+            A3.strokeRect(X+12,Y+12,8,8);
+        }
+    }
+
+    
+}
+
+function brush(e)
+{
+    A2.lineTo(X,Y);
+    A2.stroke();
+}
+
+function draw_square(e)
+{
+    
+    A.clearRect(0,0,W,H);
+    A.strokeRect(0,0,W,H);
+    A.strokeRect(XD,YD,MAXX(X-XD,Y-YD),MAXY(X-XD,Y-YD));
+}
+
+function MAXX(a,b)
+{
+if (MOD(a) < MOD(b)) { return a*MOD(b)/MOD(a);}
+else
+return a;
+}
+
+function MAXY(b,a)
+{
+if (MOD(a) < MOD(b)) { return a*MOD(b)/MOD(a);}
+else
+return a;
+}
+
+function MOD(a)
+{
+if(a < 0) {return -1*a;}
+else return a;
+}
+
+function key_down(key)
+{
+    if(DRAW_TYPE == 0) { DRAW_TYPE = key;
+        console.log(DRAW_TYPE+" down");cursor(0);}
+}
+
+function key_up(key)
+{
+    if(key == DRAW_TYPE){console.log(DRAW_TYPE+" up"); DRAW_TYPE = 0; A3.clearRect(0,0,W,H);}
+}
+
+</SCRIPT>
+</HEAD>
+<BODY onload=canv_init() onkeydown=key_down(event.keyCode) onkeyup=key_up(event.keyCode) onmousemove=mm(event) onmousedown=md(event) onmouseup=mu(event)>
+<canvas  id=canv width=800 height=600 style="position:absolute; top:0; left:0;">
+</canvas>
+<canvas  id=canv2 width=800 height=600 style="position:absolute; top:0; left:0;"></canvas>
+<canvas  id=canv3 width=800 height=600 style="position:absolute; top:0; left:0;"></canvas>
+</BODY>
+</HTML>
